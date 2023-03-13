@@ -1,14 +1,19 @@
 <script >
 import Steppers from './components/Steppers.vue';
 import Quiz from './components/Quiz.vue';
+import Roles from './components/Roles.vue';
+import Result from './components/result.vue';
+
 export default {
   components: {
     Steppers,
-    Quiz
+    Quiz,Roles,Result
   },
   data(){
     return {
-
+      cureentComp:Roles,
+      score: 0,
+      currentStep:1,
 
     questions : [
         {
@@ -136,13 +141,45 @@ export default {
 
       currentQuestion: '1',
     }
+  },
+  methods:{
+
+    show_result(score){
+      this.cureentComp = Result
+      this.score = score
+      this.currentStep=3
+
+    },
+    startQuiz(){
+      this.cureentComp = Quiz
+      this.currentStep=2
+
+    }
   }
+
 }
 </script>
 
 <template>
-  <Quiz :data="questions" :currentQuestion="currentQuestion"></Quiz>
-  <Steppers></Steppers>
+  <header>
+    <div class="row">
+          <div class="col-8 block border" >
+            <Steppers :currentStep="currentStep"></Steppers>
+          </div>
+    </div>
+  </header>
+  <main class="">
+    <div class="row ">
+      <div class=" col-8  block border" style="min-height: 70vh;">
+        <component :is="cureentComp" @start-quiz="startQuiz" :questions="questions" @return_result="show_result" :score="score"> </component>
+      </div>
+   </div>
+  </main>
+
+
+
+
+ 
 </template>
 
 <style scoped>
