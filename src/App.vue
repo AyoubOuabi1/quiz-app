@@ -163,14 +163,14 @@ export default {
 <template>
   <header>
     <div class="row">
-          <div class="col-8 block border" >
+          <div class="block border" >
             <Steppers :currentStep="currentStep"></Steppers>
           </div>
     </div>
   </header>
-  <main class="">
+  <main >
     <div class="row ">
-      <div class=" col-8  block border" style="min-height: 70vh;">
+      <div class="block border " style="min-height: 70vh;">
         <component :is="cureentComp" @start-quiz="startQuiz" :questions="questions" @return_result="show_result" :score="score"> </component>
       </div>
    </div>

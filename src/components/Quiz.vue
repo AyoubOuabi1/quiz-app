@@ -47,26 +47,108 @@ export default {
 
 </script>
 <template>
-    <div class="question">{{ questions[currentQuestion].question }}</div>
-    <div class="choices">
-        <div v-for="(choice,index) in questions[currentQuestion].choices" :value="index" :key="index" class="choice" :class="getChoiceClass(index)" @click="getAnswer(index)">{{ choice }}</div>
+    <div class="quiz">
+      <div class="question">{{ questions[currentQuestion].question }}</div>
+      <div class="choices">
+        <div v-for="(choice,index) in questions[currentQuestion].choices" 
+             :key="index"
+             :class="[getChoiceClass(index), 'choice']"
+             @click="getAnswer(index)"
+             :disabled="option_selected !== false"
+             >
+          {{ choice }}
+        </div>
+      </div>
+      <button v-if="!completed" 
+              class="next-btn"
+              :class="{ disabled: option_selected === false }"
+              :disabled="option_selected === false"
+              @click="newQuestion"
+              >
+        Next
+      </button>
+      <button v-else 
+              class="view-result-btn"
+              @click="$emit('return_result',score)">
+        View Result
+      </button>
     </div>
-    <button v-if="!completed"  type="button" class="btn btn-success ms-3" @click="newQuestion">Next</button>
-    <button v-else type="button" class="btn btn-success ms-3" @click="$emit('return_result',score)">View result</button>
-</template>
-<style scoped>
-.question {
-    font-weight: bold;
+  </template>
+  
+  <style scoped>
+  .quiz {
     margin: 2em auto;
-}
-.choices{
+    max-width: 600px;
+    text-align: center;
+  }
+  
+  .question {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 1em;
+  }
+  
+  .choices {
     display: flex;
-}
-.choice{
+    flex-direction: column;
+  }
+  
+  .choice {
     margin: 1em auto;
-    border: 2px solid #000;
-
     padding: 1em;
-}
-
-</style>
+    border: 2px solid #000;
+    border-radius: 0.5em;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .choice:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .bg-correct {
+    background-color: #a8db8f !important;
+    border-color: #a8db8f !important;
+    color: #fff;
+  }
+  
+  .bg-wrong {
+    background-color: #ffaaaa !important;
+    border-color: #ffaaaa !important;
+    color: #fff;
+  }
+  
+  .disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  .next-btn {
+    padding: 1em;
+    background-color: #1d65a6;
+    color: #fff;
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .next-btn:hover {
+    background-color: #2d84d1;
+  }
+  
+  .view-result-btn {
+    padding: 1em;
+    background-color: #1d65a6;
+    color: #fff;
+    border: none;
+    border-radius: 0.5em;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+  }
+  
+  .view-result-btn:hover {
+    background-color: #2d84d1;
+  }
+  </style>
+  
